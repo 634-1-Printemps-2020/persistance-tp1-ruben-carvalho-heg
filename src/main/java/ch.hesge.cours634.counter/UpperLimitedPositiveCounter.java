@@ -1,35 +1,29 @@
 package ch.hesge.cours634.counter;
 
-public class UpperLimitedPositiveCounter implements ICounter {
-    int count;
+public class UpperLimitedPositiveCounter extends Counter {
     int max;
 
-    public UpperLimitedPositiveCounter(int start) {
-        count = start;
-    }
     public UpperLimitedPositiveCounter(int start, int limit) {
-        count = start;
+        super(start);
         max = limit;
     }
 
     @Override
     public void inc() throws CounterException {
-        if(count < 0) {
-            throw new CounterException();
+        if(getValue()+1 > max) {
+            throw new CounterException("cannot exceed the max value" + max);
         }
-        count++;
+        super.inc();
     }
 
     @Override
     public void add(int step) throws CounterException {
-        if(count > max) {
-            throw new CounterException();
+        if(getValue()+step > max) {
+            throw new CounterException("cannot exceed the max value " + max);
         }
-        count+=step;
-    }
-
-    @Override
-    public int getValue() {
-        return count;
+        if(getValue()+step < 0) {
+            throw new CounterException("cannot be negative");
+        }
+        super.add(step);
     }
 }
